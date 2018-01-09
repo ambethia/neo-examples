@@ -1,8 +1,8 @@
 task :default do
   Dir.chdir("./src") do
-    system "dotnet publish examples.sln -o bin"
     Dir["*.cs"].each do |script|
       name = File.basename script, '.cs'
+      system "dotnet publish #{name}.sln -o bin"
       system "cd bin && dotnet ../../../neo/neo-compiler/neon/bin/neon.dll #{name}.dll"
       system "cp #{script} ../out"
       system "cp bin/#{name + '.avm'} ../out"
@@ -39,6 +39,4 @@ task :gen do
       }
     }
   EOF
-
-  system "cd src && dotnet sln add #{name}.csproj"
 end
