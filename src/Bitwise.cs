@@ -2,11 +2,14 @@ using Neo.SmartContract.Framework.Services.Neo;
 
 namespace Neo.SmartContract
 {
-    public class Add : Framework.SmartContract
+    public class Bitwise : Framework.SmartContract
     {
         public static int Main(int a, int b)
         {
-            return a + b;
+            int j = a & b;
+            int q = j | b;
+            int m = a ^ q;
+            return m;
         }
     }
 }

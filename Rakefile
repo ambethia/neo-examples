@@ -1,15 +1,30 @@
+class String
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z])([A-Z])/,'\1_\2').
+    gsub(/([a-z])([\d])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
+end
+
+desc ''
 task :default do
   Dir.chdir("./src") do
     Dir["*.cs"].each do |script|
       name = File.basename script, '.cs'
-      system "dotnet publish #{name}.sln -o bin"
+      system "dotnet publish #{name}.csproj -o bin"
       system "cd bin && dotnet ../../../neo/neo-compiler/neon/bin/neon.dll #{name}.dll"
-      system "cp #{script} ../out"
-      system "cp bin/#{name + '.avm'} ../out"
+      # system "cp #{script} ../out"
+      system "cp -n #{script} ../../neo-ruby-sdk/test/fixtures/source/#{(name + '.rb').underscore}"
+      # system "cp bin/#{name + '.avm'} ../out"
+      system "cp bin/#{name + '.avm'} ../../neo-ruby-sdk/test/fixtures/binary/#{(name + '.avm').underscore}"
     end
   end
 end
 
+desc "Generate a new contract from a template"
 task :gen do
   name = ENV["NAME"] || 'NewContract'
 
