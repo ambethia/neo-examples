@@ -9,10 +9,11 @@ class String
   end
 end
 
-desc ''
-task :default do
+desc 'Build changed contracts'
+task :build do
   Dir.chdir("./src") do
-    Dir["*.cs"].each do |script|
+    files = ENV['ALL'] ? Dir["*.cs"] : `git ls-files --exclude-standard -mo '*.cs'`.lines.map(&:chomp)
+    files.each do |script|
       name = File.basename script, '.cs'
       system "dotnet publish #{name}.csproj -o bin"
       system "cd bin && dotnet ../../../neo/neo-compiler/neon/bin/neon.dll #{name}.dll"
@@ -22,6 +23,13 @@ task :default do
       system "cp bin/#{name + '.avm'} ../../neo-ruby-sdk/test/fixtures/binary/#{(name + '.avm').underscore}"
     end
   end
+end
+
+task default: :build
+
+desc 'Modify build to compile all, not just changed'
+task :all do
+  ENV['ALL'] = '1'
 end
 
 desc "Generate a new contract from a template"
@@ -46,12 +54,12 @@ task :gen do
 
     namespace Neo.SmartContract
     {
-      public class #{name} : Framework.SmartContract
-      {
-          public static void Main()
-          {
-          }
-      }
+        public class #{name} : Framework.SmartContract
+        {
+            public static void Main()
+            {
+            }
+        }
     }
   EOF
 end

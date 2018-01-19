@@ -6,7 +6,7 @@ namespace Neo.SmartContract
     {
         public static int Main(int a)
         {
-            return a--;
+            return --a;
         }
     }
 }
