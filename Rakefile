@@ -16,7 +16,7 @@ task :build do
     files.each do |script|
       name = File.basename script, '.cs'
       system "dotnet publish #{name}.csproj -o bin"
-      system "cd bin && dotnet ../../../neo/neo-compiler/neon/bin/neon.dll #{name}.dll"
+      system "cd bin && dotnet ../../../neo-compiler/neon/bin/neon.dll #{name}.dll"
       # system "cp #{script} ../out"
       system "cp -n #{script} ../../neo-ruby-sdk/test/fixtures/source/#{(name + '.rb').underscore}"
       # system "cp bin/#{name + '.avm'} ../out"
