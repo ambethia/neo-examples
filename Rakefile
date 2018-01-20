@@ -15,12 +15,14 @@ task :build do
     files = ENV['ALL'] ? Dir["*.cs"] : `git ls-files --exclude-standard -mo '*.cs'`.lines.map(&:chomp)
     files.each do |script|
       name = File.basename script, '.cs'
-      system "dotnet publish #{name}.csproj -o bin"
-      system "cd bin && dotnet ../../../neo-compiler/neon/bin/neon.dll #{name}.dll"
-      # system "cp #{script} ../out"
-      system "cp -n #{script} ../../neo-ruby-sdk/test/fixtures/source/#{(name + '.rb').underscore}"
-      # system "cp bin/#{name + '.avm'} ../out"
-      system "cp bin/#{name + '.avm'} ../../neo-ruby-sdk/test/fixtures/binary/#{(name + '.avm').underscore}"
+      if File.exist? name + '.csproj'
+        system "dotnet publish #{name}.csproj -o bin"
+        system "cd bin && dotnet ../../../neo-compiler/neon/bin/neon.dll #{name}.dll"
+        # system "cp #{script} ../out"
+        system "cp -n #{script} ../../neo-ruby-sdk/test/fixtures/source/#{(name + '.rb').underscore}"
+        # system "cp bin/#{name + '.avm'} ../out"
+        system "cp bin/#{name + '.avm'} ../../neo-ruby-sdk/test/fixtures/binary/#{(name + '.avm').underscore}"
+      end
     end
   end
 end

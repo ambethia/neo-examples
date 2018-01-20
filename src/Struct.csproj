@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Point.cs" />
+    <Compile Include="Struct.cs" />
+    <PackageReference Include="Neo.SmartContract.Framework" Version="2.3.0" />
+  </ItemGroup>
+</Project>
